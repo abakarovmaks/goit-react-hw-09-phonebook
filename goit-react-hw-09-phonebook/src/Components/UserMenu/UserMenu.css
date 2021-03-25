@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  margin-right: 12px;
+}
+
+.name {
+  font-weight: 700;
+  margin-right: 12px;
+  color: black;
+}
+
+.button {
+  cursor: pointer;
+  padding: 8px 15px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 2px;
+}
+
+.button:hover,
+.button:focus {
+  background-color: red;
+}
