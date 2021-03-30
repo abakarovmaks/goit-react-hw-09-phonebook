@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import authOperations from '../redux/auth/auth-operations';
-import authSelectors from '../redux/auth/auth-selectors';
+// import authSelectors from '../redux/auth/auth-selectors';
 import { CSSTransition } from 'react-transition-group';
+// import Notification from '../Components/Notification/Notification';
 
 export default function LoginPage() {
   const dispatch = useDispatch();
@@ -12,74 +12,75 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const error = useSelector(authSelectors.getError);
+  // const error = useSelector(authSelectors.getError);
+  // const isLoadingAuth = useSelector(authSelectors.getLoading);
 
-  handleChange = ({ target: { name, value } }) => {
-    this.setState({ [name]: value });
+  const handleChange = ({ target: { name, value } }) => {
+    switch (name) {
+      case 'email':
+        return setEmail(value);
+      case 'password':
+        return setPassword(value);
+      default:
+        console.log(`Wow! What is this??`);
+        return;
+    }
   };
 
-  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    this.props.onLogin(this.state);
-
-    this.setState({ name: '', email: '', password: '' });
+    dispatch(authOperations.logIn({ email, password }));
+    setEmail('');
+    setPassword('');
   };
 
-  render() {
-    const { email, password } = this.state;
+  return (
+    <div>
+      <CSSTransition
+        in={true}
+        appear={true}
+        timeout={500}
+        classNames="Title-SlideIn"
+        unmountOnExit
+      >
+        <h1 className="Title">Enter your data</h1>
+      </CSSTransition>
 
-    return (
-      <div>
-        <CSSTransition
-          in={true}
-          appear={true}
-          timeout={500}
-          classNames="Title-SlideIn"
-          unmountOnExit
-        >
-          <h1 className="Title">Enter your data</h1>
-        </CSSTransition>
+      {/* <Notification message={error} /> */}
 
-        <form className="Form" onSubmit={this.handleSubmit} autoComplete="off">
-          <label htmlFor="email" className="Label">
-            Email
-          </label>
-          <input
-            className="Input"
-            type="email"
-            name="email"
-            value={email}
-            onChange={this.handleChange}
-          />
+      <form className="Form" onSubmit={handleSubmit} autoComplete="off">
+        <label htmlFor="email" className="Label">
+          Email
+        </label>
+        <input
+          className="Input"
+          type="email"
+          name="email"
+          value={email}
+          onChange={handleChange}
+        />
 
-          <label htmlFor="password" className="Label">
-            Password
-          </label>
-          <input
-            className="Input"
-            type="password"
-            name="password"
-            value={password}
-            onChange={this.handleChange}
-          />
+        <label htmlFor="password" className="Label">
+          Password
+        </label>
+        <input
+          className="Input"
+          type="password"
+          name="password"
+          value={password}
+          onChange={handleChange}
+        />
 
-          <button className="Button" type="submit">
-            Login
-          </button>
-        </form>
-      </div>
-    );
-  }
+        <button className="Button" type="submit">
+          Login
+        </button>
+      </form>
+    </div>
+  );
 }
 
-const mapStateToProps = (state) => ({
-  error: authSelectors.getError(state),
-  isLoadingAuth: authSelectors.getLoading(state),
-});
-
-const mapDispatchToProps = {
-  onLogin: authOperations.logIn,
+LoginPage.propTypes = {
+  error: PropTypes.string,
+  isLoadingAuth: PropTypes.bool,
 };
-
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
