@@ -1,20 +1,18 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
 import { connect } from 'react-redux';
 import authOperations from '../redux/auth/auth-operations';
-import { CSSTransition } from 'react-transition-group';
 import authSelectors from '../redux/auth/auth-selectors';
+import { CSSTransition } from 'react-transition-group';
 
-class LoginPage extends Component {
-  static propTypes = {
-    error: PropTypes.string,
-    isLoadingAuth: PropTypes.bool,
-  };
+export default function LoginPage() {
+  const dispatch = useDispatch();
 
-  state = {
-    email: '',
-    password: '',
-  };
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const error = useSelector(authSelectors.getError);
 
   handleChange = ({ target: { name, value } }) => {
     this.setState({ [name]: value });

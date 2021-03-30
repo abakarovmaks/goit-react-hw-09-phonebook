@@ -6,6 +6,10 @@ import { CSSTransition } from 'react-transition-group';
 import authSelectors from '../redux/auth/auth-selectors';
 
 class RegisterPage extends Component {
+  // const [name, setName] = useState('');
+  // const [email, setEmail] = useState('');
+  // const[password, setPassword] = useState('');
+
   static propTypes = {
     error: PropTypes.string,
     isLoadingAuth: PropTypes.bool,
