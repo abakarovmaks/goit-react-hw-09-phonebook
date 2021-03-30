@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Container from '../Components/Container/Container';
 import ContactForm from '../Components/ContactForm/ContactForm';
 import Filter from '../Components/Filter/Filter';
@@ -8,50 +8,39 @@ import ContactList from '../Components/ContactList/ContactList';
 import { CSSTransition } from 'react-transition-group';
 import Title from '../Components/Title/Title';
 import operations from '../redux/phoneBook/phoneBook-operations';
-
+// import Notification from '../Components/Notification/Notification';
 import selectors from '../redux/phoneBook/phoneBook-selectors';
 
-class PhoneBookPage extends Component {
-  static propTypes = {
-    contacts: PropTypes.arrayOf(PropTypes.object),
-    fetchContacts: PropTypes.func,
-    isLoadingContacts: PropTypes.bool,
-    error: PropTypes.object,
-  };
+export default function PhoneBookPage() {
+  const contacts = useSelector(selectors.getAllContacts);
+  // const isLoadingContacts = useSelector(selectors.getLoading);
+  // const error = useSelector(selectors.getError);
+  const dispatch = useDispatch();
 
-  componentDidMount() {
-    this.props.fetchContacts();
-  }
+  useEffect(() => {
+    dispatch(operations.fetchContacts());
+  }, [dispatch]);
 
-  render() {
-    return (
-      <Container>
-        <Title />
+  return (
+    <Container>
+      <Title />
 
-        <ContactForm />
+      {/* <Notification message={error} /> */}
 
-        <Filter />
+      <ContactForm />
 
-        <CSSTransition
-          in={this.props.contacts.length > 0}
-          timeout={0}
-          ommountOnExit
-        >
-          <ContactList />
-        </CSSTransition>
-      </Container>
-    );
-  }
+      <Filter />
+
+      <CSSTransition in={contacts.length > 0} timeout={0} ommountOnExit>
+        <ContactList />
+      </CSSTransition>
+    </Container>
+  );
 }
 
-const mapStateToProps = (state) => ({
-  contacts: selectors.getAllContacts(state),
-  isLoadingContacts: selectors.getLoading(state),
-  error: selectors.getError(state),
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  fetchContacts: () => dispatch(operations.fetchContacts()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(PhoneBookPage);
+PhoneBookPage.propTypes = {
+  contacts: PropTypes.arrayOf(PropTypes.object),
+  fetchContacts: PropTypes.func,
+  // isLoadingContacts: PropTypes.bool,
+  // error: PropTypes.string,
+};
