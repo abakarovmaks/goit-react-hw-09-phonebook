@@ -1,103 +1,102 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
+// import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import authOperations from '../redux/auth/auth-operations';
+// import authSelectors from '../redux/auth/auth-selectors';
 import { CSSTransition } from 'react-transition-group';
-import authSelectors from '../redux/auth/auth-selectors';
+// import Notification from '../Components/Notification/Notification';
 
-class RegisterPage extends Component {
-  // const [name, setName] = useState('');
-  // const [email, setEmail] = useState('');
-  // const[password, setPassword] = useState('');
+export default function RegisterPage() {
+  const dispatch = useDispatch();
 
-  static propTypes = {
-    error: PropTypes.string,
-    isLoadingAuth: PropTypes.bool,
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  // const error = useSelector(authSelectors.getError);
+  // const isLoadingAuth = useSelector(authSelectors.getLoading);
+
+  const handleChange = ({ target: { name, value } }) => {
+    switch (name) {
+      case 'name':
+        return setName(value);
+      case 'email':
+        return setEmail(value);
+      case 'password':
+        return setPassword(value);
+      default:
+        console.warn(`Wow! What is this??`);
+        return;
+    }
   };
 
-  state = {
-    name: '',
-    email: '',
-    password: '',
-  };
-
-  handleChange = ({ target: { name, value } }) => {
-    this.setState({ [name]: value });
-  };
-
-  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    this.props.onRegister(this.state);
+    dispatch(authOperations.register({ name, email, password }));
 
-    this.setState({ name: '', email: '', password: '' });
+    setName('');
+    setEmail('');
+    setPassword('');
   };
 
-  render() {
-    const { name, email, password } = this.state;
+  return (
+    <div>
+      <CSSTransition
+        in={true}
+        appear={true}
+        timeout={500}
+        classNames="Title-SlideIn"
+        unmountOnExit
+      >
+        <h1 className="Title">Enter your data</h1>
+      </CSSTransition>
 
-    return (
-      <div>
-        <CSSTransition
-          in={true}
-          appear={true}
-          timeout={500}
-          classNames="Title-SlideIn"
-          unmountOnExit
-        >
-          <h1 className="Title">Enter your data</h1>
-        </CSSTransition>
+      {/* <Notification message={error} /> */}
 
-        <form onSubmit={this.handleSubmit} className="Form" autoComplete="off">
-          <label htmlFor="name" className="Label">
-            Name
-          </label>
-          <input
-            className="Input"
-            type="text"
-            name="name"
-            value={name}
-            onChange={this.handleChange}
-          />
+      <form onSubmit={handleSubmit} className="Form" autoComplete="off">
+        <label htmlFor="name" className="Label">
+          Name
+        </label>
+        <input
+          className="Input"
+          type="text"
+          name="name"
+          value={name}
+          onChange={handleChange}
+        />
 
-          <label htmlFor="email" className="Label">
-            Email
-          </label>
-          <input
-            className="Input"
-            type="email"
-            name="email"
-            value={email}
-            onChange={this.handleChange}
-          />
+        <label htmlFor="email" className="Label">
+          Email
+        </label>
+        <input
+          className="Input"
+          type="email"
+          name="email"
+          value={email}
+          onChange={handleChange}
+        />
 
-          <label htmlFor="password" className="Label">
-            Password
-          </label>
-          <input
-            className="Input"
-            type="password"
-            name="password"
-            value={password}
-            onChange={this.handleChange}
-          />
+        <label htmlFor="password" className="Label">
+          Password
+        </label>
+        <input
+          className="Input"
+          type="password"
+          name="password"
+          value={password}
+          onChange={handleChange}
+        />
 
-          <button className="Button" type="submit">
-            Sign up
-          </button>
-        </form>
-      </div>
-    );
-  }
+        <button className="Button" type="submit">
+          Sign up
+        </button>
+      </form>
+    </div>
+  );
 }
 
-const mapStateToProps = (state) => ({
-  error: authSelectors.getError(state),
-  isLoadingAuth: authSelectors.getLoading(state),
-});
-
-const mapDispatchToProps = {
-  onRegister: authOperations.register,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(RegisterPage);
+// RegisterPage.propTypes = {
+//   error: PropTypes.string,
+//   isLoadingAuth: PropTypes.bool,
+// };
