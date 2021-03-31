@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import authOperations from '../redux/auth/auth-operations';
 // import authSelectors from '../redux/auth/auth-selectors';
@@ -80,7 +80,7 @@ export default function LoginPage() {
   );
 }
 
-LoginPage.propTypes = {
-  error: PropTypes.string,
-  isLoadingAuth: PropTypes.bool,
-};
+// LoginPage.propTypes = {
+//   error: PropTypes.string,
+//   isLoadingAuth: PropTypes.bool,
+// };
