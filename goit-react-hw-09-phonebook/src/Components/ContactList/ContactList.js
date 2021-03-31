@@ -10,7 +10,7 @@ import selectors from '../../redux/phoneBook/phoneBook-selectors';
 
 export default function ContactList() {
   const dispatch = useDispatch();
-  const contacts = useSelector(selectors.getVisibleContacts);
+  const contacts = useSelector(selectors.getFilteredContactsList);
   const onDelete = (id) => dispatch(operations.deleteContact(id));
 
   return (
