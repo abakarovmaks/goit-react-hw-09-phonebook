@@ -1,12 +1,18 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import * as phoneBookActions from '../../redux/phoneBook/phoneBook-actions';
 import './Filter.css';
 import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
 import selectors from '../../redux/phoneBook/phoneBook-selectors';
 
-const Filter = ({ value, onChangeFilter, contacts }) => {
+export default function Filter() {
+  const dispatch = useDispatch();
+  const value = useSelector(selectors.getFilter);
+  const contacts = useSelector(selectors.getAllContacts);
+  const onChangeFilter = (e) =>
+    dispatch(phoneBookActions.changeFilter(e.target.value));
+
   return (
     <CSSTransition
       in={contacts.length > 1}
@@ -27,22 +33,10 @@ const Filter = ({ value, onChangeFilter, contacts }) => {
       </form>
     </CSSTransition>
   );
-};
+}
 
 Filter.propTypes = {
   value: PropTypes.string,
   onChangeFilter: PropTypes.func,
   contacts: PropTypes.arrayOf(PropTypes.object),
 };
-
-const mapStateToProps = (state) => ({
-  value: selectors.getFilter(state),
-  contacts: selectors.getAllContacts(state),
-});
-
-const mapDispatchToProps = (dispatsh) => ({
-  onChangeFilter: (e) =>
-    dispatsh(phoneBookActions.changeFilter(e.target.value)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Filter);
