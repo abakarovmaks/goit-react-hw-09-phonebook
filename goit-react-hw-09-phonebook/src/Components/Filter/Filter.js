@@ -2,7 +2,6 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as phoneBookActions from '../../redux/phoneBook/phoneBook-actions';
 import './Filter.css';
-import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
 import selectors from '../../redux/phoneBook/phoneBook-selectors';
 
@@ -34,9 +33,3 @@ export default function Filter() {
     </CSSTransition>
   );
 }
-
-Filter.propTypes = {
-  value: PropTypes.string,
-  onChangeFilter: PropTypes.func,
-  contacts: PropTypes.arrayOf(PropTypes.object),
-};

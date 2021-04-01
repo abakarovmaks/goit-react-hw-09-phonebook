@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import styles from './ContactList.module.css';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
@@ -40,8 +39,3 @@ export default function ContactList() {
     </TransitionGroup>
   );
 }
-
-ContactList.propTypes = {
-  onDelete: PropTypes.func,
-  contacts: PropTypes.arrayOf(PropTypes.object),
-};

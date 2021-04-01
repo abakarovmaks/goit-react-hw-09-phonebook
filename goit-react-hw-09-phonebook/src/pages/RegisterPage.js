@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
-// import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import authOperations from '../redux/auth/auth-operations';
-// import authSelectors from '../redux/auth/auth-selectors';
 import { CSSTransition } from 'react-transition-group';
-// import Notification from '../Components/Notification/Notification';
 
 export default function RegisterPage() {
   const dispatch = useDispatch();
@@ -12,9 +9,6 @@ export default function RegisterPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  // const error = useSelector(authSelectors.getError);
-  // const isLoadingAuth = useSelector(authSelectors.getLoading);
 
   const handleChange = ({ target: { name, value } }) => {
     switch (name) {
@@ -51,8 +45,6 @@ export default function RegisterPage() {
       >
         <h1 className="Title">Enter your data</h1>
       </CSSTransition>
-
-      {/* <Notification message={error} /> */}
 
       <form onSubmit={handleSubmit} className="Form" autoComplete="off">
         <label htmlFor="name" className="Label">
@@ -95,8 +87,3 @@ export default function RegisterPage() {
     </div>
   );
 }
-
-// RegisterPage.propTypes = {
-//   error: PropTypes.string,
-//   isLoadingAuth: PropTypes.bool,
-// };
